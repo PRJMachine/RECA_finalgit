@@ -34,4 +34,4 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Deploy application from AWS ECR to Lambda with Zappa # 자파로 람다에 배포 완료
-        run: zappa deploy flask #한번 실행하고 업데이트로 바꾸자
+        run: zappa deploy dev #한번 실행하고 업데이트로 바꾸자
