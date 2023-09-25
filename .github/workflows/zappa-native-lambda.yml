@@ -1,10 +1,10 @@
-name: Zappa Docker Lambda Deploy # 워크플로의 이름을 정해줍니다
+name: Zappa Native Lambda Deploy # 워크플로의 이름을 정해줍니다
 run-name: Deployment of ${{ github.repository }} through Zappa-Docker-Lambda # 워크플로의 상세 설명입니다
 on: # 어떤 경우에 이 워크플로가 실행되는지 정해줍니다
   push: # 푸시하면 실행합니다
     branches: [ "main" ] # "main" 브랜치에 푸시하면 실행
-  pull_request: # 풀 리퀘스트가 생기면 실행합니다
-    branches: [ "main" ] # "main" 브랜치로 풀 리퀘스트가 생기면 실행
+  # pull_request: # 풀 리퀘스트가 생기면 실행합니다
+  #   branches: [ "main" ] # "main" 브랜치로 풀 리퀘스트가 생기면 실행
 jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있습니다
   deploy: # 잡 이름을 정해줍니다
     runs-on: ubuntu-latest # 깃허브 서버 내 가상환경의 최신 우분투 환경을 세팅해 진행
@@ -32,4 +32,4 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Deploy application from AWS ECR to Lambda with Zappa # 자파로 람다에 배포 완료
-        run: zappa update flask
+        run: zappa deploy flask #한번 실행하고 업데이트로 바꾸자
