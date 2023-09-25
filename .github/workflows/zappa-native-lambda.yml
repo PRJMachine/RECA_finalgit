@@ -24,7 +24,9 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
       - name: Install Python libraries with pip # pip로 파이썬 라이브러리 설치
         run: |
           pip3 install --upgrade pip
-          pip3 install -r requirements.txt
+          pip3 install flask
+          pip3 install zappa
+      # pip3 install -r requirements.txt
       - name: Configure AWS credentials # AWS 계정 로그인
         uses: aws-actions/configure-aws-credentials@v1
         with:
