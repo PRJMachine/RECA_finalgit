@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>우주최고 요리사 챗지피티</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    <style>
+        body {
+            background-image: url('kitchen_bg.jpg');
+
+            /* 배경 이미지의 크기 및 위치 설정 */
+            background-size: cover; /* 이미지를 화면에 맞게 확대/축소 */
+            background-position: center center; /* 이미지를 가운데 정렬 */
+            background-repeat: no-repeat; /* 이미지 반복 없음 */
+
+            /* 배경 이미지를 화면 전체로 채우기 */
+            width: 100%;
+            height: 100%;
+
+            
+            
+
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        body::before {
+            content: "";
+            background: inherit;
+            filter: blur(5px); /* 블러 효과 강도 설정 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* 배경 이미지 뒤로 숨기기 */
+        }
+
+        /*네비게이션바*/
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+        /* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+        } */
+
+        nav{
+        /* position: fixed; */
+        z-index: 99;
+        width: 100%;
+        background: #241e19;
+        margin: 0;
+        }
+
+        nav .wrapper{
+        position: relative;
+        max-width: 1300px;
+        padding: 0px 30px;
+        height: 70px;
+        line-height: 70px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        }
+        .wrapper .logo a{
+        color: #f2f2f2;
+        font-size: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        }
+        .wrapper .nav-links{
+        display: inline-flex;
+        }
+        .nav-links li{
+        list-style: none;
+        }
+        .nav-links li a{
+        color: #f2f2f2;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 9px 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        }
+        .nav-links li a:hover{
+        background: #3A3B3C;
+        }
+        .nav-links .mobile-item{
+        display: none;
+        }
+
+        .wrapper .btn{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        display: none;
+        }
+        .wrapper .btn.close-btn{
+        position: absolute;
+        right: 30px;
+        top: 10px;
+        }
+
+        @media screen and (max-width: 970px) {
+        .wrapper .btn{
+            display: block;
+        }
+        .wrapper .nav-links{
+            position: fixed;
+            height: 100vh;
+            width: 100%;
+            max-width: 350px;
+            top: 0;
+            left: -100%;
+            background: #242526;
+            display: block;
+            padding: 50px 10px;
+            line-height: 50px;
+            overflow-y: auto;
+            box-shadow: 0px 15px 15px rgba(0,0,0,0.18);
+            transition: all 0.3s ease;
+            }
+            }
+                
+            
+
+        /* 버튼 */
+        html, body {
+        height: 100%;
+        }
+
+        .wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+
+        .button {
+        
+        min-width: 400px;
+        min-height: 70px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 22px;
+        text-transform: uppercase;
+        letter-spacing: 1.3px;
+        font-weight: 600;
+        color: #b8afaa;
+        background: #4FD1C5;
+        background: linear-gradient(90deg, rgba(99, 59, 38, 0.64) 0%, rgba(99, 59, 38, 0.64) 100%);
+        
+        border: 10px;
+        border-radius: 100px; /*둥글리기*/
+        box-shadow: 12px 12px 24px rgba(99, 59, 38, 0.64);
+        /* transition: all 0.3s ease-in-out 0s; */
+        cursor: pointer;
+        outline: none;
+        position: relative;
+        padding: 10px;
+        margin:40px
+        }
+
+        .button:hover, .button:focus {
+        color: #313133;
+        transform: translateY(-6px);
+        }
+
+        button:hover::before, button:focus::before {
+        opacity: 1;
+        }
+
+        button:hover::after, button:focus::after {
+        animation: none;
+        display: none;
+        }
+
+        .container {
+            flex-direction: column; /* 수직 가운데 정렬을 위해 컨텐츠를 열 방향으로 배치 */
+            justify-content: center; /* 수직 가운데 정렬 */
+            align-items: center; /* 수평 가운데 정렬 */
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            display: flex;
+        }
+
+        
+
+    </style>
+<!-- 네이게이션 바 -->
+
+</div>    
+</head>
+
+<body>
+    <div class="nav-bar">
+        <nav>
+            <div class="wrapper">
+            <div class="logo"><a href="#">Logo</a></div>
+            <ul class="nav-links">
+                <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+                <li><a href="who.html">who?</a></li>
+                <li><a href="first.html">first</a></li>
+                <li><a href="second">second</a></li>
+                <li><a href="third">third</a></li>
+                <li><a href="fourth">fourth</a></li>
+        </nav>
+    <!-- <ul>
+        <li><a href="main.html">Home</a></li>
+        <li><a href="first.html">News</a></li>
+        <li><a href="second.html">Contact</a></li>
+        <li><a href="third.html">About</a></li>
+    </ul> -->
+
+    
+    <div id="container" class="container">
+        <h1></h1>
+        <div class="text-box">
+            <textarea id="comments" name="comments" rows="4" cols="50" placeholder="가진 재료가 있다면 재료를 입력하세요"></textarea>
+        </div>
+        <div class="wrap">
+            <button class="button">레시피를 알려줘</button>
+            <p></p>
+        </div>
+
+        <!-- <button onclick="start()" id="submit" name="submit">시작해볼까</button> -->
+    </div>
+    
+        <!-- JavaScript 함수 정의 -->
+        <script>
+
+        </script>
+
+</body>
+</html>
