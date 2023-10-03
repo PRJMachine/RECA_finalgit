@@ -20,7 +20,8 @@ def signup():
                         email=form.email.data)
             db.session.add(user)
             db.session.commit()
-            return redirect(url_for('main.main'))
+            flash('회원 가입이 성공적으로 완료되었습니다.')
+            return redirect(url_for('auth.login'))
         else:
             flash('이미 존재하는 사용자입니다.')
     return render_template('auth/signup.html', form=form)

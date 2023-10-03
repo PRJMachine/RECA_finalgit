@@ -529,7 +529,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <nav>
         <div class="wrapper">
-            <div class="logo"><a href="/">CookPT</a></div>
+            <div class="logo"><a href="{{ url_for('main.main') }}">CookPT</a></div>
+            
             <ul class="nav-links">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
                 <li><a href="/who">About Me</a></li>
@@ -563,5 +564,6 @@
     }
 
 </script>
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
 </body>
 </html>
