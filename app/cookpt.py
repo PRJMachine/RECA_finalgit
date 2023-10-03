@@ -2,7 +2,7 @@ import openai
 
 # 모델 - GPT 3.5 Turbo 선택
 model = "gpt-3.5-turbo"
-openai.api_key = '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'
+openai.api_key = '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'
 
 def calling_cookpt(rolemsg, assistantmsg, usermsg):
     
