@@ -4,69 +4,39 @@
     
     <div id="container" class="container">
         <h1></h1>
-        <div class="text-box">
-            <textarea id="comments" name="comments" rows="4" cols="50" placeholder="재료를 입력하세요"></textarea>
-            <p></p>
-        </div>
 
-        <div class="container">
-            <h5 class="my-3 border-bottom pb-2">질문등록</h5>
+        <div class="text-box">
             <form method="post" class="my-3">
                 {{ form.csrf_token }}
-                <!-- 오류표시 Start -->
-                {% if form.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {% for field, errors in form.errors.items() %}
-                    <strong>{{ form[field].label }}</strong>
-                    <ul>
-                        {% for error in errors %}
-                        <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                <!-- 오류표시 End -->
                 <div class="mb-3">
-                    <label for="subject">제목</label>
-                    <input type="text" class="form-control" name="subject" id="subject" value="{{ form.subject.data or '' }}">
+                    <textarea class="form-control" name="content" id="content" rows="4" cols="50" placeholder="갖고 계신 재료를 입력하세요&#10;(Ex. 돼지고기 목살, 달걀, 콩나물, 조미료는 웬만하면 다 있어)"></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="content">내용</label>
-                    <textarea class="form-control" name="content" id="content" rows="10">{{ form.content.data or '' }}</textarea>
+                <!-- <p>Action: {{ action }}</p>
+                <p>Content: {{ content }}</p>
+                <p>Answer: {{ answer }}</p> -->
+                <input type="hidden" name="action" id="action" value="default"> <!-- 숨겨진 필드 추가 -->
+                <div class="wrap">
+                    <button type="button" class="button" onclick="showSpinner(); changeAction('all');">가능한 요리</button>
+                    <button type="button" class="button" onclick="changeAction('kor'); showSpinner();">한식 요리</button>
+                    <button type="button" class="button" onclick="changeAction('chn'); showSpinner();">중식 요리</button>
+                    <button type="button" class="button" onclick="changeAction('jpn'); showSpinner();">일식 요리</button>
+                    <button type="button" class="button" onclick="changeAction('sea'); showSpinner();">동남아시아 요리</button>
+                    <button type="button" class="button" onclick="changeAction('fra'); showSpinner();">프랑스 요리</button>
+                    <button type="button" class="button" onclick="changeAction('ita'); showSpinner();">이탈리아 요리</button>
                 </div>
-                <button type="submit" class="btn btn-primary">저장하기</button>
+                <!-- <button type="submit" class="btn btn-primary">재료 입력</button> -->
             </form>
         </div>
-        <h1>입력한 데이터</h1>
-        <p>Subject: {{ subject }}</p>
-        <p>Content: {{ content }}</p>
-
-        <div class="wrap">
-            <a href="first.html">
-                <button class="button">가능한 모든 요리</button></a>
-            <a href="first.html">
-                <button class="button">한국 요리</button></a>
-            <a href="first.html">
-                <button class="button">중국 요리</button></a>
-            <a href="first.html">
-                <button class="button">일본 요리</button></a>
-            <a href="first.html">
-                <button class="button">동남아 요리</button></a>
-            <a href="first.html">
-                <button class="button">프랑스 요리</button></a>
-            <a href="first.html">
-                <button class="button">이탈리아 요리</button></a>
-            
-        </div>
-
-        <!-- <button onclick="start()" id="submit" name="submit">시작해볼까</button> -->
     </div>
     
-        <!-- JavaScript 함수 정의 -->
-        <script>
+    <!-- JavaScript 함수 정의 -->
+    <script>
+    function changeAction(action) {
+        document.getElementById('action').value = action;
+        document.querySelector('form').submit();
+    }
 
-        </script>
+    </script>
 
 </body>
 </html>

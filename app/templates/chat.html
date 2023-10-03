@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p id="answer_text" style="display: none;">{{ answer }}</p> <!--자바스크립트에 플라스크 스트링 넘기기 위한 작업-->
+    <div id="chat" class="chat-container" style="display: block;">
+        <div class="chat-box">
+            <div class="chat-message">
+                <p class="assistant">{{ answer }}</p>
+            </div>
+            <div class="chat-message">
+                <p class="assistant">추가로 물어보고 싶은 것이 있으신가요?</p>
+            </div>
+        </div>
+        <div id="loader" class="loader" style="display: none;">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+        <div class="chat-input">
+            <input type="text" placeholder="질문을 입력해 주세요.">
+            <button id="btn">Send</button>
+            <!-- <button id="btn" onclick="spinner()">Send</button> -->
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.querySelector('.chat-box');
+        let userMessages = [];
+        var assistantMessages = "{{ answer }}";
+
+        // function spinner() {
+        //     document.getElementById('loader').style.display = "block";
+        // }
+
+        function spinner(show) {
+            const loader = document.getElementById('loader');
+            loader.style.display = show ? "block" : "none";
+        }
+
+
+        const sendMessage = async () => {
+            const chatInput = document.querySelector('.chat-input input');
+            const chatMessage = document.createElement('div');
+            chatMessage.classList.add('chat-message');
+            chatMessage.innerHTML = `<p>${chatInput.value}</p>`;
+            chatBox.appendChild(chatMessage);
+
+            // 사용자 메시지 추출
+            userMessages.push(chatInput.value);
+
+            chatInput.value = '';
+            spinner(true);
+            console.log(userMessages)
+            console.log(assistantMessages)
+            const response = await fetch('/chat/messege', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userMessages: userMessages,
+                    assistantMessages: assistantMessages,
+                })
+            });
+
+            const data = await response.json();
+            spinner(false);
+
+            // 서버에서 받은 응답 처리
+            const astrologerMessage = document.createElement('div');
+            astrologerMessage.classList.add('chat-message');
+            astrologerMessage.innerHTML = `<p class='assistant'>${data.assistant}</p>`;
+            chatBox.appendChild(astrologerMessage);
+        };
+
+        document.querySelector('.chat-input button').addEventListener('click', sendMessage);
+    </script>
+</body>
+
+</html>
+{% endblock %}
