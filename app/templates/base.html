@@ -526,16 +526,25 @@
 </head>
 <body>
     <!-- 네비게이션 바 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <nav>
         <div class="wrapper">
-            <div class="logo"><a href="./">CookPT</a></div>
+            <div class="logo"><a href="/">CookPT</a></div>
             <ul class="nav-links">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-                <li><a href="who">About Me</a></li>
-                <li><a href="login">Login</a></li>
+                <li><a href="/who">About Me</a></li>
+
+                {% if g.user %}
+                <li><a href="{{ url_for('auth.logout') }}">{{ g.user.username }} (Logout)</a></li>
+                {% else %}
+                <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                <li><a href="{{ url_for('auth.signup') }}">Signup</a></li>
+                {% endif %}
+
                 <!-- <li><a href="second">second</a></li>
                 <li><a href="third">third</a></li>
                 <li><a href="fourth">fourth</a></li> -->
+            </ul>
     </nav>
     <div class="layerPopup">
         <div class="spinner"></div>
