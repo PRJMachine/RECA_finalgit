@@ -1,11 +1,9 @@
 from flask import Blueprint, render_template, request, url_for
 from werkzeug.utils import redirect
 
-
-from app.forms import QuestionForm
+from app.forms import QuestionForm, Question_sec_Form
 import app.cookpt as cpt
 bp = Blueprint('main', __name__, url_prefix='/')
-
 
 @bp.route('/')
 def home():
@@ -40,14 +38,36 @@ def first():
         return render_template("chat.html", action=action, content=content, answer=answer)
     else:
         return render_template("first.html", form=form)
-     
-@bp.route('/second')
-def second():
-    return render_template('second.html')
 
-@bp.route('/third')
+
+
+
+@bp.route('/second', methods=('GET', 'POST'))
+def second():
+    form = Question_sec_Form()
+    if request.method == 'POST' and form.validate_on_submit():
+        target=form.target.data
+        content=form.content.data
+        action = request.form['action']  # action 필드의 값을 가져옴
+        answer = ''
+        question = '만들고자 하는 요리는 ' + target + '입니다. 지금 가지고 있는 요리재료는 ' + content + '이며, 어떤 재료가 부족한지, 뭐가 더 있으면 좋은지 알려주세요.'
+        answer = cpt.calling_cookpt('당신은 요리사 입니다. 요리나 음식 분야 외의 질문은 거절하며, 요리에 대한 자부심이 강하기 때문에 묻는 말에 반말로, 간결하게 대답합니다.','', question)
+        return render_template("chat.html", answer=answer)
+    else:
+        return render_template("second.html", form=form)
+
+
+
+@bp.route('/third', methods=('GET', 'POST'))
 def third():
-    return render_template('third.html')
+    form = QuestionForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        content=form.content.data
+        answer = ''
+        answer = cpt.calling_cookpt('당신은 요리사 입니다. 요청받은 요리의 필요한 재료와 함께 조리방법을 간단하게 알려줍니다.','','%s 를 만들고 싶은데, 어떤 재료가 필요하고 어떤 순서로 조리해야 하나요?' %content)
+        return render_template("chat.html", content=content, answer=answer)
+    else:
+        return render_template('third.html', form=form)
 
 @bp.route('/who')
 def who():

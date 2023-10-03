@@ -7,6 +7,11 @@ class QuestionForm(FlaskForm):
     #요리재료 입력하는 칸. main.py - first.html 에서 이용할 계획
     content = TextAreaField('내용', validators=[DataRequired('먼저 요리재료를 입력해 주세요.')])
 
+class Question_sec_Form(FlaskForm):
+    # subject = StringField('제목', validators=[DataRequired()])
+    target = TextAreaField('만들요리', validators=[DataRequired('먼저 만들고자 하는 요리를 입력해 주세요.')])
+    content = TextAreaField('내용', validators=[DataRequired('먼저 요리재료를 입력해 주세요.')])
+
 class UserCreateForm(FlaskForm):
     username = StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
     password1 = PasswordField('비밀번호', validators=[

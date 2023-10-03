@@ -2,23 +2,34 @@
 {% block content %}
     
     <div id="container" class="container">
-        <h1></h1><p></p>
-        <div class="text-box">
-            <textarea id="comments" name="comments" rows="1" cols="50" placeholder=" 만들고 싶은 요리를 입력하세요"></textarea>
-            <p></p>
-            <textarea id="comments" name="comments" rows="4" cols="50" placeholder=" 현재 가지고 있는 재료를 입력하세요"></textarea>
-        </div>
-        <div class="wrap">
-            <button class="button">필요한 재료를 알려줘</button>
-            <p></p>
-        </div>
+        <h1></h1>
 
-        <!-- <button onclick="start()" id="submit" name="submit">시작해볼까</button> -->
+        <div class="text-box">
+            <form method="post" class="my-3">
+                {{ form.csrf_token }}
+                <div class="mb-3">
+                    <textarea class="form-control" name="target" id="target" rows="1" cols="50" placeholder=" 만들고 싶은 요리를 입력해주세요."></textarea>
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control" name="content" id="content" rows="4" cols="50" placeholder=" 가지고 있는 요리재료를 입력하세요&#10; (Ex. 돼지고기 목살, 달걀, 콩나물, 조미료는 웬만하면 다 있어)"></textarea>
+                </div>
+                <!-- <p>Action: {{ action }}</p>
+                <p>Content: {{ content }}</p>
+                <p>Answer: {{ answer }}</p> -->
+                <input type="hidden" name="action" id="action" value="default"> <!-- 숨겨진 필드 추가 -->
+                <div class="wrap">
+                    <button type="button" class="button" onclick="showSpinner(); changeAction('chk');">재료 탐색</button>
+                </div>
+            </form>
+        </div>
     </div>
     
         <!-- JavaScript 함수 정의 -->
         <script>
-
+        function changeAction(action) {
+            document.getElementById('action').value = action;
+            document.querySelector('form').submit();
+        }
         </script>
 
 </body>
