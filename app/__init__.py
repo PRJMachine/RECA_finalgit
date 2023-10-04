@@ -8,12 +8,6 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-# app = Flask(__name__)
-# @app.route('/', methods=['GET'])
-# def hello_world():
-#     return 'Hello, World! This is your API.'
-
-
 app = Flask(__name__)
 app.config.from_object(config)
 
@@ -27,8 +21,6 @@ from .views import main, chat, auth_views
 app.register_blueprint(main.bp)
 app.register_blueprint(chat.bp)
 app.register_blueprint(auth_views.bp)
-
-
 
 
 # def create_app():
