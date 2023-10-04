@@ -211,11 +211,11 @@
 </head>
 <body>
     <div id="intro" class="intro-container">
-        <img src="/static/mainpage.jpg" class="mainimg"> <!--alt="cookpt"-->
+        <img src="./static/mainpage.jpg" class="mainimg"> <!--alt="cookpt"-->
 
         <p></p><p></p><p></p>
         <div class="wrap">
-            <a href="main">
+            <a href="{{ url_for('main.main') }}">
             <button class="button">enter</button></a>
         </div>
 
