@@ -5,10 +5,9 @@ BASE_DIR = os.path.dirname(__file__)
 # SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector:///prj4:VMware1!@10.0.0.199:3306/pybo' #mysql사용 시
 # SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://admin:VMware1!@test.czh0sssi32uy.ap-northeast-2.rds.amazonaws.com:3306/pybo' #mysql-aws rds사용 시
 # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://admin:VMware1!@test.czh0sssi32uy.ap-northeast-2.rds.amazonaws.com:3306/pybo"
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://prj4:VMware1!@172.16.1.190:60306/pybo"
+SQLALCHEMY_DATABASE_URI = "mysql+pymysql://prj4:VMware1!@175.196.82.14:60306/pybo"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SECRET_KEY = "devdevdev"
-
 
 #인잇, 마이그레이션 하지말고 그냥 직접 만든 뒤 연결해서 쓰자
 # CREATE DATABASE pybo;
