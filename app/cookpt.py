@@ -2,7 +2,12 @@ import openai
 
 # 모델 - GPT 3.5 Turbo 선택
 model = "gpt-3.5-turbo"
-openai.api_key = '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'
+
+def open_file(filepath) :
+    with open(filepath, 'r', encoding='utf-8') as infile :
+        return infile.read()
+openai.api_key = open_file('apikey.txt')
+
 
 def calling_cookpt(rolemsg, assistantmsg, usermsg):
     
