@@ -6,7 +6,8 @@ model = "gpt-3.5-turbo"
 def open_file(filepath) :
     with open(filepath, 'r', encoding='utf-8') as infile :
         return infile.read()
-openai.api_key = "sk-" + open_file('apikey.txt') + 'OK7'
+# openai.api_key = "sk-" + open_file('apikey.txt') + 'OK7'
+openai.api_key = "sk-" + 'OPslHQzhMzoXGVjVztPjT3' + 'BlbkFJpoftGJHBvNrv9t3hg' + 'OK7'
 
 
 def calling_cookpt(rolemsg, assistantmsg, usermsg):
