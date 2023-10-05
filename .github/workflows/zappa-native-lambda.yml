@@ -6,7 +6,7 @@ on: # 어떤 경우에 이 워크플로가 실행되는지 정해줍니다
   # pull_request: # 풀 리퀘스트가 생기면 실행합니다
   #   branches: [ "main" ] # "main" 브랜치로 풀 리퀘스트가 생기면 실행
 jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있습니다
-  deploy: # 잡 이름을 정해줍니다
+  lambda_maker: # 잡 이름을 정해줍니다
     runs-on: ubuntu-latest # 깃허브 서버 내 가상환경의 최신 우분투 환경을 세팅해 진행
     env: # 환경변수를 정해줄 수 있습니다
       ECR_IMAGE_URI: ${{ secrets.ECR_IMAGE_URI }} # 저장소의 비밀 환경변수를 정해주었습니다
@@ -38,3 +38,40 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
         run: |
           source venv/bin/activate
           zappa update prod
+  container_maker: # 잡 이름을 정해줍니다
+    runs-on: ubuntu-latest # 깃허브 서버 내 가상환경의 최신 우분투 환경을 세팅해 진행
+    env: # 환경변수를 정해줄 수 있습니다
+      ECR_IMAGE_URI: ${{ secrets.ECR_IMAGE_URI }} # 저장소의 비밀 환경변수를 정해주었습니다
+    steps: # 잡의 각 단계입니다
+      - name: Checkout # 잡의 이름으로, 깃허브 서버로 이 저장소를 내려받습니다
+        uses: actions/checkout@v3 # https://github.com/actions/checkout에서 액션을 공유받아 쓸 수 있습니다
+      - name: Installing docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get install docker-ce docker-ce-cli containerd.io
+          sudo systemctl start docker
+      - name: Build docker images
+        run: docker build -t reca-ecr .
+      - name: Configure AWS credentials # AWS 계정 로그인
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: push image to AWS ECR Repo
+        run: |
+          docker tag reca-ecr:latest 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com/reca-ecr:latest
+          docker push 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com/reca-ecr:latest
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: push image to dockerhub repo
+        run: |
+          docker tag reca-ecr:latest hdkreca/cookpt:latest
+          docker push hdkreca/cookpt:latest
