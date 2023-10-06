@@ -1,48 +1,48 @@
-name: Zappa Native Lambda Deploy # 워크플로의 이름을 정해줍니다
-run-name: Deployment of ${{ github.repository }} through Zappa-Docker-Lambda # 워크플로의 상세 설명입니다
+name: Zappa Native Lambda Deploy 
+run-name: Deployment of ${{ github.repository }} through Zappa-Docker-Lambda # workflow description
 on: # 어떤 경우에 이 워크플로가 실행되는지 정해줍니다
   push: # 푸시하면 실행합니다
     branches: [ "main" ] # "main" 브랜치에 푸시하면 실행
   # pull_request: # 풀 리퀘스트가 생기면 실행합니다
   #   branches: [ "main" ] # "main" 브랜치로 풀 리퀘스트가 생기면 실행
-jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있습니다
-  lambda_maker: # 잡 이름을 정해줍니다
+jobs:
+  lambda_maker: # job1
     runs-on: ubuntu-latest # 깃허브 서버 내 가상환경의 최신 우분투 환경을 세팅해 진행
     env: # 환경변수를 정해줄 수 있습니다
-      ECR_IMAGE_URI: ${{ secrets.ECR_IMAGE_URI }} # 저장소의 비밀 환경변수를 정해주었습니다
-    steps: # 잡의 각 단계입니다
+      ECR_IMAGE_URI: ${{ secrets.ECR_IMAGE_URI }} 
+    steps: 
       - name: Checkout # 잡의 이름으로, 깃허브 서버로 이 저장소를 내려받습니다
         uses: actions/checkout@v3 # https://github.com/actions/checkout에서 액션을 공유받아 쓸 수 있습니다
-      - name: Setup Python # 파이썬을 설치합니다
+      - name: Setup Python 
         uses: actions/setup-python@v4
-        with: # 공유받은 액션을 위한 매개변수를 지정해야 합니다
+        with: # 공유받은 액션을 위한 매개변수를 지정
           python-version: 3.8 # 액션에서 파이썬 3.8 버전을 사용하도록 합니다
-      - name: Activate a virtual environment # 자파를 위한 가상환경 설치
-        run: | # 커맨드라인 명령어를 사용할 수 있습니다
+      - name: Activate a virtual environment # python venv setting for zappa
+        run: | 
           python3 -m venv venv
           source venv/bin/activate
-      - name: Install Python libraries with pip # pip로 파이썬 라이브러리 설치
+      - name: Install Python libraries with pip # installing python libraries using pip
         run: |
           source venv/bin/activate
           pip3 install --upgrade pip
           pip3 install flask
           pip3 install zappa
           pip3 install -r requirements.txt
-      - name: Configure AWS credentials # AWS 계정 로그인
+      - name: Configure AWS credentials 
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: ap-northeast-2
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Deploy application from AWS ECR to Lambda with Zappa # 자파로 람다에 배포 완료
+      - name: Deploy application from AWS ECR to Lambda with Zappa
         run: |
           source venv/bin/activate
           zappa update prod
-  container_maker: # 잡 이름을 정해줍니다
-    runs-on: ubuntu-latest # 깃허브 서버 내 가상환경의 최신 우분투 환경을 세팅해 진행
-    env: # 환경변수를 정해줄 수 있습니다
-      ECR_IMAGE_URI: ${{ secrets.ECR_IMAGE_URI }} # 저장소의 비밀 환경변수를 정해주었습니다
-    steps: # 잡의 각 단계입니다
+  container_maker:
+    runs-on: ubuntu-latest
+    env: 
+      ECR_IMAGE_URI: ${{ secrets.ECR_IMAGE_URI }} 
+    steps:
       - name: Checkout # 잡의 이름으로, 깃허브 서버로 이 저장소를 내려받습니다
         uses: actions/checkout@v3 # https://github.com/actions/checkout에서 액션을 공유받아 쓸 수 있습니다
       - name: Installing docker
@@ -56,13 +56,13 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
           sudo systemctl start docker
       - name: Build docker images
         run: docker build -t reca-ecr .
-      - name: Configure AWS credentials # AWS 계정 로그인
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: ap-northeast-2
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Transfers authority from AWS ECR to Docker # AWS 계정 정보를 도커로 전달
+      - name: Transfers authority from AWS ECR to Docker
         run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com
       - name: push image to AWS ECR Repo
         run: |
@@ -77,7 +77,7 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
         run: |
           docker tag reca-ecr:latest hdkreca/cookpt:latest
           docker push hdkreca/cookpt:latest
-      - name: Run scripts in server
+      - name: Run scripts in server - onprem deployment
         uses: appleboy/ssh-action@v0.1.3
         with:
           host: 175.196.82.14
