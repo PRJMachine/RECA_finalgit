@@ -77,14 +77,24 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
         run: |
           docker tag reca-ecr:latest hdkreca/cookpt:latest
           docker push hdkreca/cookpt:latest
-      - name: Set up SSH Key
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
-          eval "$(ssh-agent -s)"
-          ssh-add /tmp/deploy_key
-      - name: Deploy to Kubernetes
-        run: |
-          ssh root@175.196.82.14 -p60022 "kubectl delete -f ./flaskimg/flask_deploy.yaml"
-          ssh root@175.196.82.14 -p60022 "kubectl apply -f ./flaskimg/flask_deploy.yaml"
-          kubectl get pods
+      # - name: Set up SSH Key
+      #   run: |
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/deploy_key
+      #     chmod 600 /tmp/deploy_key
+      #     eval "$(ssh-agent -s)"
+      #     ssh-add /tmp/deploy_key
+      # - name: Deploy to Kubernetes
+      #   run: |
+      #     ssh root@175.196.82.14 -p60022 "kubectl delete -f ./flaskimg/flask_deploy.yaml"
+      #     ssh root@175.196.82.14 -p60022 "kubectl apply -f ./flaskimg/flask_deploy.yaml"
+      #     kubectl get pods
+      - name: Run scripts in server
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: 175.196.82.14
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 60022
+          script: |
+            kubectl delete -f ./flaskimg/flask_deploy.yaml
+            kubectl apply -f ./flaskimg/flask_deploy.yaml
