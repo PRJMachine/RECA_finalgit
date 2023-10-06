@@ -43,58 +43,48 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
     env: # 환경변수를 정해줄 수 있습니다
       ECR_IMAGE_URI: ${{ secrets.ECR_IMAGE_URI }} # 저장소의 비밀 환경변수를 정해주었습니다
     steps: # 잡의 각 단계입니다
-      - name: Checkout # 잡의 이름으로, 깃허브 서버로 이 저장소를 내려받습니다
-        uses: actions/checkout@v3 # https://github.com/actions/checkout에서 액션을 공유받아 쓸 수 있습니다
-      - name: Installing docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          sudo apt-get update
-          sudo apt-get install docker-ce docker-ce-cli containerd.io
-          sudo systemctl start docker
-      - name: Build docker images
-        run: docker build -t reca-ecr .
-      - name: Configure AWS credentials # AWS 계정 로그인
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: ap-northeast-2
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Transfers authority from AWS ECR to Docker # AWS 계정 정보를 도커로 전달
-        run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com
-      - name: push image to AWS ECR Repo
-        run: |
-          docker tag reca-ecr:latest 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com/reca-ecr:latest
-          docker push 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com/reca-ecr:latest
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: push image to dockerhub repo
-        run: |
-          docker tag reca-ecr:latest hdkreca/cookpt:latest
-          docker push hdkreca/cookpt:latest
-      # - name: Set up SSH Key
+      # - name: Checkout # 잡의 이름으로, 깃허브 서버로 이 저장소를 내려받습니다
+      #   uses: actions/checkout@v3 # https://github.com/actions/checkout에서 액션을 공유받아 쓸 수 있습니다
+      # - name: Installing docker
       #   run: |
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/deploy_key
-      #     chmod 600 /tmp/deploy_key
-      #     eval "$(ssh-agent -s)"
-      #     ssh-add /tmp/deploy_key
-      # - name: Deploy to Kubernetes
+      #     sudo apt-get update
+      #     sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+      #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      #     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      #     sudo apt-get update
+      #     sudo apt-get install docker-ce docker-ce-cli containerd.io
+      #     sudo systemctl start docker
+      # - name: Build docker images
+      #   run: docker build -t reca-ecr .
+      # - name: Configure AWS credentials # AWS 계정 로그인
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-region: ap-northeast-2
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # - name: Transfers authority from AWS ECR to Docker # AWS 계정 정보를 도커로 전달
+      #   run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com
+      # - name: push image to AWS ECR Repo
       #   run: |
-      #     ssh root@175.196.82.14 -p60022 "kubectl delete -f ./flaskimg/flask_deploy.yaml"
-      #     ssh root@175.196.82.14 -p60022 "kubectl apply -f ./flaskimg/flask_deploy.yaml"
-      #     kubectl get pods
+      #     docker tag reca-ecr:latest 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com/reca-ecr:latest
+      #     docker push 457017831224.dkr.ecr.ap-northeast-2.amazonaws.com/reca-ecr:latest
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      # - name: push image to dockerhub repo
+      #   run: |
+      #     docker tag reca-ecr:latest hdkreca/cookpt:latest
+      #     docker push hdkreca/cookpt:latest
       - name: Run scripts in server
         uses: appleboy/ssh-action@v0.1.3
         with:
           host: 175.196.82.14
           username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           port: 60022
           script: |
-            kubectl delete -f ./flaskimg/flask_deploy.yaml
-            kubectl apply -f ./flaskimg/flask_deploy.yaml
+            echo "testing"
+            # kubectl delete -f ./flaskimg/flask_deploy.yaml
+            # kubectl apply -f ./flaskimg/flask_deploy.yaml
