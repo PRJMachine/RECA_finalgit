@@ -82,9 +82,10 @@ jobs: # 한 워크플로는 여러 병렬 실행 가능한 잡을 가질 수 있
         with:
           host: 175.196.82.14
           username: root
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_KEY }}
           port: 60022
           script: |
-            echo "testing"
+            pwd
+            ll
             # kubectl delete -f ./flaskimg/flask_deploy.yaml
             # kubectl apply -f ./flaskimg/flask_deploy.yaml
